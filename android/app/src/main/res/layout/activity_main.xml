@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- 顶部工具栏 -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="WiFi 测密大师"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <!-- 历史记录按钮 -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_history"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="记录"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="8dp" />
+
+                    <!-- 重新扫描按钮 -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_scan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="扫描"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- 环境模式徽章 & 字典选择栏 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <!-- 当前模式徽章 -->
+                    <TextView
+                        android:id="@+id/tv_mode_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_badge_mode"
+                        android:text="🛡️ 免 Root 模式"
+                        android:textColor="@color/primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <!-- 字典选择下拉切换 -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_dict_select"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:text="字典: Top 20 (推荐) ▾"
+                        android:textSize="11sp"
+                        app:strokeColor="@color/divider"
+                        android:paddingHorizontal="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 列表内容区 (下拉刷新) -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_wifi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="16dp"
+                    android:clipToPadding="false" />
+
+                <!-- 空状态提示 -->
+                <LinearLayout
+                    android:id="@+id/layout_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📡"
+                        android:textSize="48sp" />
+
+                    <TextView
+                        android:id="@+id/tv_empty_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="正在扫描附近 WiFi 信号..."
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_permission_grant"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="授予权限并刷新"
+                        android:layout_marginTop="16dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </FrameLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

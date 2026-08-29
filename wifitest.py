@@ -56,7 +56,7 @@ def scan(face):
         ssid = x.ssid
         if len(ssid) == 0:  # hidden ssid
             ssid = '<length: 0>'
-        elif ssid == '\\x00':  # hidden ssid
+        elif ssid == '\x00':  # hidden ssid
             ssid = '<length: 1>'
         else:
             if len(x.akm) > 0:  # if len(x.akm)==0 ,the auth is OPEN
@@ -70,7 +70,7 @@ def get_aps(face):
     return scan_results
 
 def test(i, face, x, key, stu, ts):
-    showID = x.bssid if len(x.ssid) == 0 or x.ssid == '\\x00' or len(x.ssid) > len(x.bssid) else x.ssid
+    showID = x.bssid if len(x.ssid) == 0 or x.ssid == '\x00' or len(x.ssid) > len(x.bssid) else x.ssid
     key_index = 0
     while key_index < len(key):
         k = key[key_index]
@@ -176,6 +176,9 @@ class WiFiApp:
         self.selected_ap = None
         self.testing = False
         self.test_thread = None
+        self.timeout = 30
+        self.result_file = 'result.txt'
+        self.keys = []
 
         # WiFi 列表
         self.wifi_label = Label(master, text="可用 WiFi 热点:")
@@ -250,10 +253,6 @@ class WiFiApp:
         self.dict_path = filedialog.askopenfilename(title="选择密码字典", filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
         if self.dict_path:
             self.dict_label.config(text=self.dict_path)
-
-    timeout = 30
-    result_file = 'result.txt'
-    keys = []
 
     def start_test(self):
         if self.testing:

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+wifi_success*.txt
+result.txt
+
+# Android / Gradle
+.gradle/
+build/
+*/build/
+*.apk
+*.aab
+local.properties
+.cxx/
+captures/
+.externalNativeBuild/
+
+# IDE
+.idea/
+*.iml
+.project
+.settings/
+.vscode/
+.DS_Store

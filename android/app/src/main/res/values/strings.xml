@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">WiFi 测密大师</string>
+    <string name="scan_wifi">扫描热点</string>
+    <string name="scanning">正在扫描附近 WiFi...</string>
+    <string name="no_wifi_found">暂未发现可用 WiFi，请确保开启了系统定位与 WiFi</string>
+    <string name="permission_required">需要位置与附近设备权限才能扫描 WiFi</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="mode_root">⚡ Root 极速静默模式</string>
+    <string name="mode_standard">🛡️ 免 Root 极简模式</string>
+    <string name="dict_top20">Top 20 极简弱口令 (推荐)</string>
+    <string name="dict_top100">Top 100 常用弱口令</string>
+    <string name="dict_smart">智能生成 (基于SSID)</string>
+    <string name="dict_custom">导入外部字典 (.txt)</string>
+    <string name="start_test">开始测密</string>
+    <string name="testing_title">正在测试: %1$s</string>
+    <string name="test_success">测试成功！</string>
+    <string name="test_failed">未匹配到弱密码</string>
+    <string name="copy_password">复制密码</string>
+    <string name="share_qr">二维码分享</string>
+    <string name="history_title">破解与测试记录</string>
+    <string name="clear_history">清空记录</string>
+</resources>

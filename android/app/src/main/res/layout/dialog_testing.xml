@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/card_rounded"
+    android:padding="20dp">
+
+    <!-- 弹窗把手 -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#CBD5E1"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_test_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="正在测密: TP-LINK_5G"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/tv_test_engine_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_tag_chip"
+            android:text="🛡️ 免 Root"
+            android:textColor="@color/primary"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- 当前测试密码卡片 -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="#F1F5F9"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前尝试密码"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_current_key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="88888888"
+                android:textColor="@color/primary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- 进度条与速率指标 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="14dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_progress_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="进度: 3 / 20 (15%)"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_speed_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="速率: 0.8 key/s"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:trackCornerRadius="4dp"
+        app:trackThickness="6dp"
+        android:progress="15"
+        android:max="100" />
+
+    <!-- 实时控制台输出 -->
+    <TextView
+        android:id="@+id/tv_log_console"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#1E293B"
+        android:textColor="#38BDF8"
+        android:textSize="11sp"
+        android:fontFamily="monospace"
+        android:padding="8dp"
+        android:layout_marginTop="12dp"
+        android:scrollbars="vertical"
+        android:text="[系统] 正在初始化测密引擎...\n[系统] 准备加载目标热点配置..." />
+
+    <!-- 操作按钮组 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_pause_resume"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="暂停"
+            android:layout_marginEnd="6dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_skip"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="跳过"
+            android:layout_marginEnd="6dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="终止"
+            app:backgroundTint="@color/danger"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+</LinearLayout>

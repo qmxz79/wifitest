@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1E88E5</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="primary_light">#E3F2FD</color>
+    <color name="accent">#00C853</color>
+    
+    <color name="bg_main">#F8FAFC</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+    
+    <color name="text_primary">#1E293B</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_muted">#94A3B8</color>
+    
+    <color name="badge_root">#EF4444</color>
+    <color name="badge_nonroot">#3B82F6</color>
+    <color name="badge_shizuku">#8B5CF6</color>
+    
+    <color name="signal_strong">#10B981</color>
+    <color name="signal_medium">#F59E0B</color>
+    <color name="signal_weak">#EF4444</color>
+    
+    <color name="success">#10B981</color>
+    <color name="warning">#F59E0B</color>
+    <color name="danger">#EF4444</color>
+    
+    <color name="divider">#E2E8F0</color>
+</resources>
