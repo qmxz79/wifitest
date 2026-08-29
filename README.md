@@ -7,7 +7,7 @@
 ## 📱 Android 端应用：WiFi 测密大师 (WiFi Test Master)
 
 > **最新版本**: `v2.0.1`  
-> **📥 安装包直接下载**: [WiFiTestMaster_v2.0.1.apk](./release/WiFiTestMaster_v2.0.1.apk) (约 5.7 MB)
+> **📥 安装包直接下载**: [WiFiTestMaster_v2.0.1.apk (GitHub加速/直链)](https://raw.githubusercontent.com/qmxz79/wifitest/master/release/WiFiTestMaster_v2.0.1.apk) | [仓库内文件地址](https://github.com/qmxz79/wifitest/blob/master/release/WiFiTestMaster_v2.0.1.apk) (约 5.7 MB)
 
 ### 核心功能
 - **双引擎自适应**：
