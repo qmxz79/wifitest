@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.wifitest.wifikeyviewer.R;
 import com.wifitest.wifikeyviewer.core.model.WifiApInfo;
 
@@ -22,6 +23,7 @@ public class WifiApAdapter extends RecyclerView.Adapter<WifiApAdapter.ViewHolder
     public interface OnApActionListener {
         void onTestClick(WifiApInfo ap);
         void onViewPasswordClick(WifiApInfo ap);
+        void onShareConnectedWifiClick(WifiApInfo ap);
     }
 
     private final Context context;
@@ -45,7 +47,6 @@ public class WifiApAdapter extends RecyclerView.Adapter<WifiApAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WifiApInfo ap = apList.get(position);
 
-        holder.tvSsid.setText(ap.getSsid());
         holder.tvBssidSignal.setText(String.format("BSSID: %s  |  %d dBm", ap.getBssid(), ap.getRssi()));
 
         // 频段
@@ -65,11 +66,45 @@ public class WifiApAdapter extends RecyclerView.Adapter<WifiApAdapter.ViewHolder
             holder.tvSignalIcon.setText("📶 🔴");
         }
 
-        // 已保存密码状态
+        // 1. 已连接状态判定 (最高优先级展示)
+        if (ap.isConnected()) {
+            holder.tvSsid.setText("✓ " + ap.getSsid());
+            holder.tvConnectedHint.setVisibility(View.VISIBLE);
+            holder.tagConnected.setVisibility(View.VISIBLE);
+
+            // 卡片绿色高亮描边
+            holder.cardWifi.setStrokeColor(Color.parseColor("#16A34A"));
+            holder.cardWifi.setStrokeWidth((int) (2 * context.getResources().getDisplayMetrics().density));
+            holder.cardWifi.setCardBackgroundColor(Color.parseColor("#F0FDF4"));
+
+            holder.btnAction.setText("系统分享");
+            holder.btnAction.setEnabled(true);
+            holder.btnAction.setBackgroundColor(Color.parseColor("#16A34A"));
+            holder.btnAction.setOnClickListener(v -> {
+                if (listener != null) listener.onShareConnectedWifiClick(ap);
+            });
+
+            holder.itemView.setOnClickListener(v -> {
+                if (listener != null) listener.onShareConnectedWifiClick(ap);
+            });
+            return;
+        }
+
+        // 恢复普通卡片默认样式
+        holder.tvSsid.setText(ap.getSsid());
+        holder.tvConnectedHint.setVisibility(View.GONE);
+        holder.tagConnected.setVisibility(View.GONE);
+        holder.cardWifi.setStrokeColor(Color.parseColor("#E2E8F0"));
+        holder.cardWifi.setStrokeWidth((int) (1 * context.getResources().getDisplayMetrics().density));
+        holder.cardWifi.setCardBackgroundColor(Color.WHITE);
+        holder.itemView.setOnClickListener(null);
+
+        // 2. 已保存/已破解密码状态
         if (ap.isSaved() && ap.getSavedPassword() != null) {
             holder.tagSavedPwd.setVisibility(View.VISIBLE);
             holder.tagSavedPwd.setText("已获密码: " + ap.getSavedPassword());
             holder.btnAction.setText("查看");
+            holder.btnAction.setEnabled(true);
             holder.btnAction.setBackgroundColor(ContextCompat.getColor(context, R.color.accent));
             holder.btnAction.setOnClickListener(v -> {
                 if (listener != null) listener.onViewPasswordClick(ap);
@@ -97,15 +132,19 @@ public class WifiApAdapter extends RecyclerView.Adapter<WifiApAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvSignalIcon, tvSsid, tvBssidSignal;
-        TextView tagFreq, tagSecurity, tagSavedPwd;
+        MaterialCardView cardWifi;
+        TextView tvSignalIcon, tvSsid, tvConnectedHint, tvBssidSignal;
+        TextView tagConnected, tagFreq, tagSecurity, tagSavedPwd;
         MaterialButton btnAction;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            cardWifi = itemView.findViewById(R.id.card_wifi);
             tvSignalIcon = itemView.findViewById(R.id.tv_signal_icon);
             tvSsid = itemView.findViewById(R.id.tv_ssid);
+            tvConnectedHint = itemView.findViewById(R.id.tv_connected_hint);
             tvBssidSignal = itemView.findViewById(R.id.tv_bssid_signal);
+            tagConnected = itemView.findViewById(R.id.tag_connected);
             tagFreq = itemView.findViewById(R.id.tag_freq);
             tagSecurity = itemView.findViewById(R.id.tag_security);
             tagSavedPwd = itemView.findViewById(R.id.tag_saved_pwd);
@@ -113,3 +152,4 @@ public class WifiApAdapter extends RecyclerView.Adapter<WifiApAdapter.ViewHolder
         }
     }
 }
+

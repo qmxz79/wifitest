@@ -147,6 +147,11 @@ public class MainActivity extends AppCompatActivity {
                 ResultDialogFragment.newInstance(ap.getSsid(), ap.getSavedPassword(), ap.getSecurityType())
                         .show(getSupportFragmentManager(), "result_dialog");
             }
+
+            @Override
+            public void onShareConnectedWifiClick(WifiApInfo ap) {
+                openSystemWifiShare(ap);
+            }
         });
         recyclerView.setAdapter(adapter);
 
@@ -378,6 +383,43 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "测试已取消", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void openSystemWifiShare(WifiApInfo ap) {
+        String savedPwd = resultRepository.getPasswordForSsid(ap.getSsid());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("调用系统分享「" + ap.getSsid() + "」密码")
+                .setMessage("即将打开系统原生 WiFi 设置：\n\n" +
+                        "1. 点击已连接网络「" + ap.getSsid() + "」旁的【分享/二维码】图标\n" +
+                        "2. 验证指纹或锁屏密码\n" +
+                        "3. 即可直接查看官方二维码与明文密码。")
+                .setPositiveButton("前往系统设置", (dialog, which) -> {
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            try {
+                                Intent panelIntent = new Intent(android.provider.Settings.Panel.ACTION_WIFI);
+                                startActivity(panelIntent);
+                                return;
+                            } catch (Exception ignored) {
+                            }
+                        }
+                        Intent intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "无法打开系统 WiFi 设置: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("取消", null);
+
+        if (savedPwd != null && !savedPwd.isEmpty()) {
+            builder.setNeutralButton("查看已存二维码", (dialog, which) -> {
+                ResultDialogFragment.newInstance(ap.getSsid(), savedPwd, ap.getSecurityType())
+                        .show(getSupportFragmentManager(), "result_dialog");
+            });
+        }
+
+        builder.show();
     }
 
     private void triggerSuccessVibration() {

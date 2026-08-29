@@ -16,6 +16,7 @@ public class WifiApInfo implements Parcelable {
     private final boolean is5GHz;
     private boolean isSaved;
     private String savedPassword;
+    private boolean isConnected;
 
     public WifiApInfo(String ssid, String bssid, int rssi, int frequency, String capabilities) {
         this.ssid = (ssid == null || ssid.isEmpty()) ? "<隐藏SSID>" : ssid;
@@ -108,6 +109,14 @@ public class WifiApInfo implements Parcelable {
         this.savedPassword = savedPassword;
     }
 
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
+
     protected WifiApInfo(Parcel in) {
         ssid = in.readString();
         bssid = in.readString();
@@ -119,6 +128,7 @@ public class WifiApInfo implements Parcelable {
         is5GHz = in.readByte() != 0;
         isSaved = in.readByte() != 0;
         savedPassword = in.readString();
+        isConnected = in.readByte() != 0;
     }
 
     @Override
@@ -133,6 +143,7 @@ public class WifiApInfo implements Parcelable {
         dest.writeByte((byte) (is5GHz ? 1 : 0));
         dest.writeByte((byte) (isSaved ? 1 : 0));
         dest.writeString(savedPassword);
+        dest.writeByte((byte) (isConnected ? 1 : 0));
     }
 
     @Override

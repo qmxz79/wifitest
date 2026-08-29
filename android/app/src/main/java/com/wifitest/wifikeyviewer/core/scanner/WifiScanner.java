@@ -108,6 +108,42 @@ public class WifiScanner {
         }
     }
 
+    public String getConnectedSsid() {
+        if (wifiManager == null) return null;
+        try {
+            android.net.wifi.WifiInfo info = wifiManager.getConnectionInfo();
+            if (info != null && info.getNetworkId() != -1) {
+                String ssid = info.getSSID();
+                if (ssid != null) {
+                    if (ssid.startsWith("\"") && ssid.endsWith("\"") && ssid.length() >= 2) {
+                        ssid = ssid.substring(1, ssid.length() - 1);
+                    }
+                    if (!"<unknown ssid>".equalsIgnoreCase(ssid) && !ssid.isEmpty()) {
+                        return ssid;
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    public String getConnectedBssid() {
+        if (wifiManager == null) return null;
+        try {
+            android.net.wifi.WifiInfo info = wifiManager.getConnectionInfo();
+            if (info != null && info.getNetworkId() != -1) {
+                String bssid = info.getBSSID();
+                if (bssid != null && !bssid.equals("00:00:00:00:00:00") && !bssid.equals("02:00:00:00:00:00")) {
+                    return bssid;
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+
     private synchronized void handleScanCompleted(boolean freshResults) {
         if (!isScanning) return;
         isScanning = false;
@@ -119,6 +155,9 @@ public class WifiScanner {
                 results = new ArrayList<>();
             }
 
+            String connectedSsid = getConnectedSsid();
+            String connectedBssid = getConnectedBssid();
+
             // 合并相同 SSID（保留信号最强的一条）
             Map<String, ScanResult> uniqueMap = new HashMap<>();
             for (ScanResult sr : results) {
@@ -129,12 +168,36 @@ public class WifiScanner {
             }
 
             List<WifiApInfo> apList = new ArrayList<>();
+            WifiApInfo connectedAp = null;
+
             for (ScanResult sr : uniqueMap.values()) {
-                apList.add(WifiApInfo.fromScanResult(sr));
+                WifiApInfo ap = WifiApInfo.fromScanResult(sr);
+                if (connectedSsid != null && connectedSsid.equals(ap.getSsid())) {
+                    ap.setConnected(true);
+                    connectedAp = ap;
+                } else if (connectedBssid != null && connectedBssid.equalsIgnoreCase(ap.getBssid())) {
+                    ap.setConnected(true);
+                    connectedAp = ap;
+                } else {
+                    apList.add(ap);
+                }
             }
 
-            // 按信号强弱降序排序 (level 数值越大信号越好, 如 -40dBm > -80dBm)
+            // 按信号强弱降序排序
             Collections.sort(apList, (a, b) -> Integer.compare(b.getRssi(), a.getRssi()));
+
+            // 如果当前已连接某 WiFi，将其置顶在第 1 位
+            if (connectedAp != null) {
+                apList.add(0, connectedAp);
+            } else if (connectedSsid != null) {
+                // 如果已连接 WiFi 不在扫描列表（如隐藏网络），手动构建一条并置顶
+                android.net.wifi.WifiInfo info = wifiManager.getConnectionInfo();
+                int rssi = info != null ? info.getRssi() : -50;
+                int freq = info != null ? info.getFrequency() : 2412;
+                WifiApInfo manualConnected = new WifiApInfo(connectedSsid, connectedBssid, rssi, freq, "[WPA2-PSK-CCMP]");
+                manualConnected.setConnected(true);
+                apList.add(0, manualConnected);
+            }
 
             mainHandler.post(() -> {
                 if (currentCallback != null) {
@@ -157,3 +220,4 @@ public class WifiScanner {
         }
     }
 }
+

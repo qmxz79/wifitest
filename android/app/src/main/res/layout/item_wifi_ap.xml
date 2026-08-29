@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_wifi"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="12dp"
@@ -48,6 +49,18 @@
                     android:ellipsize="end"
                     android:maxLines="1" />
 
+                <!-- 已连接小字提示 -->
+                <TextView
+                    android:id="@+id/tv_connected_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✓ 已连接 (点击调用系统分享密码)"
+                    android:textColor="#16A34A"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/tv_bssid_signal"
                     android:layout_width="wrap_content"
@@ -71,13 +84,25 @@
                 android:paddingHorizontal="14dp" />
         </LinearLayout>
 
-        <!-- 标签栏 (频段, 加密方式, 密码状态) -->
+        <!-- 标签栏 (已连接, 频段, 加密方式, 密码状态) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tag_connected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_tag_connected"
+                android:text="✓ 当前连接"
+                android:textColor="#15803D"
+                android:textStyle="bold"
+                android:textSize="11sp"
+                android:layout_marginEnd="6dp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tag_freq"
@@ -113,3 +138,4 @@
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
+
